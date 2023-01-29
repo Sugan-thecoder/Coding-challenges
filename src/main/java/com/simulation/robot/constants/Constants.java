@@ -19,6 +19,9 @@ public final class Constants {
     public static final String ACTIVE = "ACTIVE";
     public static final String ROBO_ACKNOWLEDGEMENT = "Instruction acknowledged and executed";
     public static final String OUTPUT = "OUTPUT";
+    public static final String ALREADY_ROBOT_EXISTS_PLACE="Already a robot present in this place please try a different coordinates";
+    public static final String ALREADY_ROBOT_EXISTS_MOVE="Already a robot present unable to move please try RIGHT/LEFT before MOVE";
+
 
 
 

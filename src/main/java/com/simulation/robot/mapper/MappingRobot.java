@@ -7,6 +7,10 @@ import com.simulation.robot.service.UpdateRobotPosition;
 
 import java.util.ArrayList;
 
+/**
+ * This class is used to maintain the all robot details, find active robot and maps the values while placing/moving
+ * the robot
+ */
 public class MappingRobot extends Robot {
     public ArrayList<Robot> addRobotDetails(RobotMovement robotMovement, ArrayList<Robot> robotArrayList) throws RobotExceptionHandler {
         Robot currentRobot = new Robot();
@@ -48,12 +52,9 @@ public class MappingRobot extends Robot {
     public ArrayList<Robot> updateRobotDetails(RobotMovement robotMovement, ArrayList<Robot> robotArrayList) throws RobotExceptionHandler {
 
         int index = robotMovement.getRobotId();
-        Robot currentRobot = new Robot();
         for (Robot getRobot : robotArrayList) {
             if (getRobot.getRobotId() == index) {
-               // getRobot.setStatus(robotMovement.getStatus());
                 getRobot.setXAxis(robotMovement.getXAxis());
-                //getRobot.setRobotId(index);
                 getRobot.setCurrentPosition(robotMovement.getCurrentDirection());
                 getRobot.setYAxis(robotMovement.getYAxis());
                 robotArrayList.get(index - 1).setYAxis(getRobot.getYAxis());
@@ -61,22 +62,17 @@ public class MappingRobot extends Robot {
                 robotArrayList.get(index - 1).setCurrentPosition(getRobot.getCurrentPosition());
             }
         }
-        //robotArrayList.get(index-1).setYAxis(currentRobot.getYAxis());
-        //robotArrayList.remove(index-1);
-        //robotArrayList.add(currentRobot);
         return robotArrayList;
     }
 
     public ArrayList<Robot> updateRobotDirection(RobotMovement robotMovement, ArrayList<Robot> robotArrayList) throws RobotExceptionHandler {
 
         int index = robotMovement.getRobotId();
-        //Robot currentRobot=new Robot();
         for (Robot getRobot : robotArrayList) {
             if (getRobot.getRobotId() == index) {
                 robotArrayList.get(index - 1).setCurrentPosition(robotMovement.getCurrentDirection());
             }
         }
-        //robotArrayList.remove(index-1);
         return robotArrayList;
     }
 
@@ -92,4 +88,16 @@ public class MappingRobot extends Robot {
         }
         return robotArrayList;
     }
+
+    public String IsAnyRobotAlreadyPresent(int xAxis,int yAxis,ArrayList<Robot> robotArrayList) {
+        String isAlreadyExists="false";
+        for (Robot getRobot : robotArrayList) {
+            if (getRobot.getXAxis() == xAxis && getRobot.getYAxis() == yAxis) {
+                isAlreadyExists="true";
+                break;
+            }
+        }
+         return isAlreadyExists;
+    }
+
 }

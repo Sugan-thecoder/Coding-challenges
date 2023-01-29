@@ -80,13 +80,20 @@ public class RobotPositionImpl implements RobotPosition {
             robotPosition.setStatus(ACTIVE);
         }
         robotPosition.setRobotId(roboCount);
-        robotArrayList = mappingRobot.addRobotDetails(robotPosition, robotArrayList);
-        if (!checkBoundaryImpl.isRobotInsideBoundary(robotPosition)) {
-            throw new RobotExceptionHandler(INVALID_COORDINATES);
+        String isAlreadyExists=mappingRobot.IsAnyRobotAlreadyPresent(robotPosition.getXAxis(),robotPosition.getYAxis(),robotArrayList);
+        if(isAlreadyExists.equals("false")) {
+            robotArrayList = mappingRobot.addRobotDetails(robotPosition, robotArrayList);
+            if (!checkBoundaryImpl.isRobotInsideBoundary(robotPosition)) {
+                throw new RobotExceptionHandler(INVALID_COORDINATES);
+            }
+            updateRobotPosition.setNewPosition(robotPosition);
+            roboCount++;
+            return true;
         }
-        updateRobotPosition.setNewPosition(robotPosition);
-        roboCount++;
-        return true;
+        else
+        {
+            throw new RobotExceptionHandler(ALREADY_ROBOT_EXISTS_PLACE);
+        }
     }
 
     @Override
@@ -117,12 +124,18 @@ public class RobotPositionImpl implements RobotPosition {
 
     @Override
     public Boolean updateRobotPosition(final RobotMovement robotPosition) throws RobotExceptionHandler {
-
-        if (checkBoundaryImpl.isRobotInsideBoundary(robotPosition)) {
-            updateRobotPosition.movePosition(robotPosition);
-            mappingRobot.updateRobotDetails(robotPosition, robotArrayList);
+        String isAlreadyExists=mappingRobot.IsAnyRobotAlreadyPresent(robotPosition.getXAxis(),robotPosition.getYAxis(),robotArrayList);
+        if(isAlreadyExists.equals("false")) {
+            if (checkBoundaryImpl.isRobotInsideBoundary(robotPosition)) {
+                updateRobotPosition.movePosition(robotPosition);
+                mappingRobot.updateRobotDetails(robotPosition, robotArrayList);
+            }
+            return true;
         }
-        return true;
+        else
+        {
+            throw  new RobotExceptionHandler(ALREADY_ROBOT_EXISTS_MOVE);
+        }
     }
 
     @Override
